@@ -1,0 +1,20 @@
+name: Security Policy Gatekeeper
+
+on: [push]
+
+jobs:
+  scan-repository:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for forbidden files
+        run: |
+          if [ -f passwords.txt ]; then
+            echo "SECURITY VIOLATION: passwords.txt detected!"
+            exit 1
+          else
+            echo "No forbidden files found. Policy cleared."
+            exit 0
+          fi
